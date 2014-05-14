@@ -1,0 +1,26 @@
+echo "Switching capslock/ctrl"
+/usr/bin/setxkbmap -option "ctrl:swapcaps"
+
+
+echo "Resetting mouse accel"
+xinput set-prop 12 "Device Accel Constant Deceleration" 2.0
+
+
+echo "Rotating/positioning monitors"
+
+# Rotate middle monitor
+xrandr --output HDMI2 --rotate left
+
+# Set LEFT monitor on the LEFT (which happens to sort things correctly
+xrandr --output VGA1 --right-of HDMI2
+xrandr --output HDMI1 --left-of HDMI2
+
+# Set VERTICAL offset for LEFT monitor
+xrandr --output HDMI1 --pos 0x400
+
+# Set VERTICAL offset for RIGHT monitor
+xrandr --output VGA1 --pos 3000x400
+
+
+echo "Loading xmodmap"
+xmodmap ~/.Xmodmap

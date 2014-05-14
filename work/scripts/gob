@@ -1,0 +1,32 @@
+#!/usr/bin/python
+
+import sys, os
+import subprocess
+
+def get(index, default=None):
+    if len(sys.argv) > index:
+        return sys.argv[index]
+    return default
+
+if len(sys.argv) <= 1:
+    print "Usage: gob <file> [os] [arch] [output]"
+    sys.exit()
+
+file_name = get(1)
+osn = get(2, "linux")
+arch = get(3, "amd64")
+out = get(4)
+
+if arch not in ("amd64", "386"):
+    print "Invalid Arch: %s" % arch
+    sys.exit()
+
+if not out:
+    out = file_name.rsplit(".", 1)[0]+"_"+osn+"_"+arch
+
+#print "GOOS=%s GOARCH=%s CGO_ENABLED=0 go build -o %s %s" % (osn, arch, out, file_name)
+print os.popen("GOOS=%s GOARCH=%s CGO_ENABLED=0 go build -o %s %s" %
+    (osn, arch, out, file_name)).read()
+#print os.popen("GOOS=%s GOARCH=%s CGO_ENABLED=0 go run %s" % (osn, arch, file_name)).read()
+#subprocess.Popen("GOOS=%s GOARCH=%s CGO_ENABLED=0 go build -o %s %s" %
+#    (os, arch, out, file_name), shell=True)
