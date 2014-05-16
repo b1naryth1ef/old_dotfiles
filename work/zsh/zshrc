@@ -14,6 +14,7 @@ PATH=$PATH:~/Code/Go/gopath/bin/
 # Various additional paths
 export ANDROID_HOME=~/Code/android/adt/sdk/
 export GOPATH=~/Code/Go/gopath
+export GOROOT=~/Downloads/go/
 export SPOTON_HOME=~/Code/spoton2/
 
 # Go cross-compile stuff
