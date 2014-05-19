@@ -35,6 +35,9 @@ alias ticket="python ~/ticket.py"
 alias gogo="cd ~/Code/Go/gopath/src/"
 alias open="nautilus --no-desktop"
 
+# Apps
+alias uberwriter="/opt/extras.ubuntu.com/uberwriter/bin/uberwriter"
+
 # RC stuff
 alias erc="emacs ~/.zshrc"
 alias rrc="source ~/.zshrc"

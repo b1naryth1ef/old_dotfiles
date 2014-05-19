@@ -3,7 +3,7 @@ echo "Switching capslock/ctrl"
 
 
 echo "Resetting mouse accel"
-xinput set-prop 11 "Device Accel Constant Deceleration" 2.0
+xinput set-prop "PIXART USB OPTICAL MOUSE" "Device Accel Constant Deceleration" 2.0
 
 echo "Rotating/positioning monitors"
 
