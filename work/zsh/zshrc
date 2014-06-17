@@ -11,6 +11,9 @@ PATH=$PATH:~/Code/android/adt/sdk/tools/
 PATH=$PATH:~/scripts/
 PATH=$PATH:~/Code/Go/gopath/bin/
 
+# Go Version Manager
+source "$HOME/.gvm/scripts/gvm"
+
 # Various additional paths
 export ANDROID_HOME=~/Code/android/adt/sdk/
 export GOPATH=~/Code/Go/gopath
