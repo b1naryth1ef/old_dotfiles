@@ -21,8 +21,8 @@ alias ei3="e ~/.i3/config"
 
 # Git Aliases
 alias git_branch="git symbolic-ref --short -q HEAD"
-upd="git pull origin "
-
+alias upd="git pull origin `git_branch`"
+alias gtfo="git push origin `git_branch`"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
