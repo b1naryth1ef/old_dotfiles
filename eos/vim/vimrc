@@ -1,0 +1,292 @@
+"This is Andrei (@b1naryth1ef's) vimrc. It was copied
+" and modified from @spekode's who kindly gave me his
+" srcs.
+set nocompatible
+
+"NeoBundle!
+set rtp+=~/.vim/bundle/neobundle.vim/
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" A bunch of packages which do stuff
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'ervandew/supertab'
+NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'tpope/vim-sensible'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/gist-vim'
+NeoBundle 'vim-scripts/bufkill.vim'
+NeoBundle 'wincent/Command-T'
+NeoBundle 'ervandew/supertab'
+NeoBundle 'widox/vim-buffer-explorer-plugin'
+NeoBundle 'Shougo/neocomplete'
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'Shougo/vimproc.vim', {
+    \ 'build' : {
+    \     'mac' : 'make -f make_mac.mak',
+    \     'unix' : 'make -f make_unix.mak',
+    \    },
+    \ }
+NeoBundle 'osyo-manga/vim-reunions'
+NeoBundle 'osyo-manga/vim-marching'
+
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
+
+"neo complete stuff
+let g:neocomplete#enable_at_startup = 1
+
+"vim-marching configuration
+let g:marching_clang_command = "clang"
+let g:marching_include_paths = [
+            \   "/usr/include" 
+            \]
+let g:marching_enable_neocomplete = 1
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+      let g:neocomplete#force_omni_input_patterns = {}
+  endif
+let g:neocomplete#force_omni_input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#force_omni_input_patterns.c =
+    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+
+"neocomplete configuration
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  "return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
+" Fix fucky jedi-options
+autocmd FileType python setlocal completeopt-=preview
+
+imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
+"Refresh the completion cache
+imap <buffer> <C-x><C-x><C-o> <Plug>(marching_force_start_omni_complete)
+
+"Suppress the intro message
+set shortmess+=I
+
+"All this just to handle the space on the left. Maybe some redundant?
+filetype indent on
+compiler ruby
+syntax on
+set autoindent
+set hlsearch
+set number
+set showmatch
+set incsearch
+set background=dark
+set hidden
+set backspace=indent,eol,start
+set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
+set ruler
+set wrap
+set dir=/tmp//
+set scrolloff=5
+set ignorecase
+set smartcase
+set wildignore+=*.pyc,*.o,*.class,*.lo,.git,vendor/*,node_modules/**,bower_components/**
+set tags+=gems.tags
+
+"maximum number of changes that can be undone
+set undolevels=1000
+
+
+"Ctrl-C triggers Escape
+"inoremap <Nul> <Esc>
+inoremap <C-c> <Esc>
+nnoremap <C-c> <nop>
+
+"Disable <Esc>
+"but only if we're running in the GUI. Otherwise it messes up the arrows.
+"Next I should stop using the damn arrows :)
+if has("gui_running")
+    inoremap <Esc> <nop>
+    "Also bump the font up to 12
+    set guifont=menlo\ regular\ 10
+endif
+
+"Highlight search
+set hlsearch
+"Clear a search with <space>
+nnoremap <silent> <Space> :silent noh<Bar>echo<CR>
+
+"Switch back and forth between buffers in normal mode
+nnoremap <silent> <tab> :bnext<CR>
+nnoremap <silent> <s-tab> :bprevious<CR>
+
+syntax on
+
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType vhdl setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType verilog setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType cs setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+" Autoremove trailing spaces when saving the buffer
+autocmd FileType c,cpp,eruby,html,java,javascript,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+"No vim, don't automatically continue my comments. That's annoying.
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+"And please ignore mode suggestions.
+set modelines=0
+
+"The Silver Searcher
+if executable('ag')
+  "Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+colorscheme jellybeans
+
+" ========= Plugin Options ========
+let g:AckAllFiles = 0
+let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
+
+let html_use_css=1
+let html_number_lines=0
+let html_no_pre=1
+
+let vimclojure#WantNailgun = 0
+let vimclojure#HighlightBuiltins = 1
+let vimclojure#ParenRainbow = 1
+
+let g:gist_clip_command = 'pbcopy'
+let g:gist_detect_filetype = 1
+
+let g:rubycomplete_buffer_loading = 1
+
+let g:no_html_toolbar = 'yes'
+
+let coffee_no_trailing_space_error = 1
+
+" Nerd tree bullshit
+let NERDTreeIgnore=['\.pyc', '\.o', '\.class', '\.lo']
+let NERDTreeHijackNetrw = 0
+let NERDTreeShowHidden=1
+
+let g:netrw_banner = 0
+
+let g:VimuxUseNearestPane = 1
+
+let g:CommandTMaxHeight = 15
+let g:CommandTMatchWindowAtTop = 1
+let g:CommandTCancelMap     = ['<ESC>', '<C-c>']
+let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<ESC>OB']
+let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<ESC>OA']
+
+" ========= Shortcuts ========
+
+" NERDTree
+map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
+map <silent> <LocalLeader>nr :NERDTree<CR>
+map <silent> <LocalLeader>nf :NERDTreeFind<CR>
+
+" CommandT
+map <silent> <leader>ff :CommandT<CR>
+map <silent> <leader>fb :CommandTBuffer<CR>
+map <silent> <leader>fr :CommandTFlush<CR>
+
+" Ack
+map <LocalLeader>aw :Ack '<C-R><C-W>'
+
+" TComment
+map <silent> <LocalLeader>cc :TComment<CR>
+map <silent> <LocalLeader>uc :TComment<CR>
+
+map <silent> <LocalLeader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj<CR>
+map <silent> <LocalLeader>cj :!clj %<CR>
+
+map <silent> <LocalLeader>gd :e product_diff.diff<CR>:%!git diff<CR>:setlocal buftype=nowrite<CR>
+map <silent> <LocalLeader>pd :e product_diff.diff<CR>:%!svn diff<CR>:setlocal buftype=nowrite<CR>
+
+map <silent> <LocalLeader>nh :nohls<CR>
+map <silent> <LocalLeader>bd :bufdo :bd<CR>
+
+let g:jedi#use_splits_not_buffers = "left"
+
+cnoremap <Tab> <C-L><C-D>
+
+nnoremap <silent> k gk
+nnoremap <silent> j gj
+nnoremap <silent> Y y$
+
+map <silent> <LocalLeader>ws :highlight clear ExtraWhitespace<CR>
+
+" ========= Functions ========
+
+command! SudoW w !sudo tee %
+
+" http://techspeak.plainlystated.com/2009/08/vim-tohtml-customization.html
+function! DivHtml(line1, line2)
+  exec a:line1.','.a:line2.'TOhtml'
+  %g/<style/normal $dgg
+  %s/<\/style>\n<\/head>\n//
+  %s/body {/.vim_block {/
+  %s/<body\(.*\)>\n/<div class="vim_block"\1>/
+  %s/<\/body>\n<\/html>/<\/div>
+  "%s/\n/<br \/>\r/g
+
+  set nonu
+endfunction
+command! -range=% DivHtml :call DivHtml(<line1>,<line2>)
+
+function! GitGrepWord()
+  cgetexpr system("git grep -n '" . expand("<cword>") . "'")
+  cwin
+  echo 'Number of matches: ' . len(getqflist())
+endfunction
+command! -nargs=0 GitGrepWord :call GitGrepWord()
+nnoremap <silent> <Leader>gw :GitGrepWord<CR>
+
+function! Trim()
+  %s/\s*$//
+endfunction
+command! -nargs=0 Trim :call Trim()
+nnoremap <silent> <Leader>cw :Trim<CR>
+
+function! StartInferiorSlimeServer()
+  let g:__InferiorSlimeRunning = 1
+  call VimuxRunCommand("inferior-slime")
+endfunction
+command! -nargs=0 StartInferiorSlimeServer :call StartInferiorSlimeServer()
+
+function! __Edge()
+  colorscheme Tomorrow-Night
+  au BufWinLeave * colorscheme Tomorrow-Night
+
+  set ttyfast
+
+  map <leader>nf :e%:h<CR>
+  map <C-p> :CommandT<CR>
+
+  let g:VimuxOrientation = "h"
+  let g:VimuxHeight = "40"
+endfunction
+
+function! __HardMode()
+  nmap h <nop>
+  nmap j <nop>
+  nmap k <nop>
+  nmap l <nop>
+endfunction
