@@ -1,0 +1,1 @@
+lilbro is a macbook air running ubuntu 14.10 that I use as a sort of "shell" for remote development work. I configured it specifically to feel extremely light weight, having almost no distractions for all the windows.
